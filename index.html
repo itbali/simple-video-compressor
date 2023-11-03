@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Video Compressor</title>
+	<style>
+		/* Theme colors */
+		:root {
+			--bg-color: #363537;
+			--text-color: #FAFAFA;
+			--helper-text-color: #9e9e9e;
+			--container-bg: #424242;
+			--border-color: #616161;
+			--button-bg: #153874;
+			--button-bg-hover: #0d1f3b;
+			--button-text-color: #ffffff;
+			--button-bg-disabled: #616161;
+			--button-text-color-disabled: #9e9e9e;
+			--shadow-color: #00000033;
+			--slider-bg: #2c2c32;
+			--slider-bg-checked: #8f6c14;
+			--button-success-bg: #245927;
+			--button-success-bg-hover: #1b3d1f;
+			--button-error-bg: #5a1f1f;
+			--button-error-bg-hover: #3d1313;
+		}
+
+		.light-theme {
+			--bg-color: #f7f7f7;
+			--text-color: #333;
+			--helper-text-color: #666;
+			--container-bg: #ffffff;
+			--border-color: #ddd;
+			--button-bg: #0084ff;
+			--button-bg-hover: #006ae0;
+			--button-text-color: #ffffff;
+			--button-bg-disabled: #ccc;
+			--button-text-color-disabled: #666;
+			--shadow-color: rgba(0, 0, 0, 0.1);
+			--slider-bg: #777;
+			--slider-bg-checked: #153874;
+			--button-success-bg: #4caf50;
+			--button-success-bg-hover: #388e3c;
+			--button-error-bg: #f44336;
+			--button-error-bg-hover: #d32f2f;
+		}
+
+		body {
+			background-color: var(--bg-color);
+			color: var(--text-color);
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			margin: 0;
+			padding: 20px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.container {
+			position: relative;
+			background-color: var(--container-bg);
+			box-shadow: 0 2px 4px var(--shadow-color);
+			max-width: 600px;
+			margin: auto;
+			padding: 20px;
+			border-radius: 8px;
+		}
+
+		h1 {
+			text-align: center;
+			color: var(--text-color);
+		}
+
+		input, select, button {
+			font-size: 1rem;
+			padding: 10px;
+			margin-top: 10px;
+			border-radius: 5px;
+			border: 1px solid var(--border-color);
+			box-sizing: border-box; /* Added to include padding and border in the element's total width and height */
+			width: 100%; /* Added to make the elements responsive */
+		}
+
+		button {
+			background-color: var(--button-bg);
+			color: white;
+			margin-top: 20px;
+			margin-bottom: 10px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+			width: auto; /* Reset width for buttons */
+		}
+
+		button:hover {
+			background-color: var(--button-bg-hover);
+		}
+
+		button:disabled {
+			background-color: var(--button-bg-disabled);
+			color: var(--button-text-color-disabled);
+			cursor: not-allowed;
+		}
+
+		.button-success {
+			background-color: var(--button-success-bg);
+		}
+		.button-success:hover {
+			background-color: var(--button-success-bg-hover);
+		}
+		.button-error {
+			background-color: var(--button-error-bg);
+		}
+		.button-error:hover {
+			background-color: var(--button-error-bg-hover);
+		}
+
+		.switch {
+			position: relative;
+			display: inline-block;
+			width: 60px;
+			height: 34px;
+		}
+
+		.switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			border: 1px solid var(--border-color);
+			background-color: var(--slider-bg);
+			-webkit-transition: .4s;
+			transition: .4s;
+		}
+
+		.slider:before {
+			position: absolute;
+			content: "🌙";
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 26px;
+			width: 26px;
+			box-sizing: border-box;
+			left: 4px;
+			bottom: 4px;
+			border-radius: 50%;
+			border: 2px solid var(--border-color);
+			-webkit-transition: .4s;
+			transition: .4s;
+		}
+
+		input:checked + .slider {
+			background-color: var(--slider-bg-checked);
+		}
+
+		input:focus + .slider {
+			box-shadow: 0 0 1px var(--slider-bg-checked);
+		}
+
+		input:checked + .slider:before {
+			content: "☀️";
+			-webkit-transform: translateX(26px);
+			-ms-transform: translateX(26px);
+			transform: translateX(26px);
+		}
+
+		.slider.round {
+			border-radius: 34px;
+		}
+
+		.slider.round:before {
+			border-radius: 50%;
+		}
+
+		.theme-switcher {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+		}
+
+		.bitrate-select {
+			margin-top: 0;
+			background-color: var(--container-bg);
+			color: var(--text-color);
+		}
+
+		.buttons-block {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+		}
+
+		#videoPreview {
+			width: 100%;
+			height: auto;
+			border-radius: 5px;
+			margin-top: 10px;
+		}
+
+		.file-picker-container {
+			width: 100%;
+			display: flex;
+			gap: 10px;
+			align-items: center;
+			flex-direction: row;
+		}
+
+		#filePicker {
+			display: none;
+		}
+
+		.file-picker-label {
+			width: fit-content;
+			flex-shrink: 0;
+			cursor: pointer;
+			background-color: var(--button-bg);
+			color: var(--button-text-color);
+			padding: 10px;
+			border-radius: 5px;
+			text-align: center;
+		}
+
+		.file-picker-label:hover {
+			background-color: var(--button-bg-hover);
+		}
+
+		.bitrate-select-label {
+			margin-top: 10px;
+			color: var(--text-color);
+		}
+
+		.bitrate-select {
+			margin-top: 0;
+			border: 1px solid var(--border-color);
+			background-color: var(--container-bg);
+			color: var(--text-color);
+		}
+
+		.bitrate-select option {
+			background-color: var(--container-bg);
+			color: var(--text-color);
+		}
+
+
+		.helper-text {
+			text-align: left;
+			color: var(--helper-text-color);
+		}
+
+		hr {
+			border: 0;
+			height: 1px;
+			background: #e1e1e1;
+			margin-top: 20px;
+			margin-bottom: 20px;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<h1>Video Compressor</h1>
+	<div class="theme-switcher">
+		<label class="switch">
+			<input id="themeToggle" type="checkbox">
+			<span class="slider round"></span>
+		</label>
+	</div>
+	<div class="file-picker-container">
+		<label class="file-picker-label" for="filePicker">⬇️ Select video:</label>
+		<span class="helper-text" id="fileName">No file selected</span>
+		<input accept="video/*" id="filePicker" type="file">
+	</div>
+	<video controls id="videoPreview">
+		<source src="" type="video/mp4">
+		Sorry, your browser doesn't support embedded videos.
+	</video>
+	<label class="bitrate-select-label" for="bitrate">Quality:</label>
+	<select class="bitrate-select" id="bitrate">
+		<option value="100k">Extreme low</option>
+		<option selected value="1000k">Low</option>
+		<option value="2500k">Normal</option>
+		<option value="5000k">High</option>
+	</select>
+	<span class="helper-text" id="estimatedSize">Estimated size: N/A</span>
+	<div class="buttons-block">
+		<button id="saveBtn">Select output folder</button>
+		<button disabled id="compressBtn">Compress</button>
+	</div>
+	<br>
+	<span class="helper-text" id="selectedPath">Selected path: not selected</span>
+	<br>
+	<span class="helper-text" id="status">Loading app...</span>
+	<hr>
+	<span class="helper-text" id="details"></span>
+</div>
+<script src="renderer.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{
+  "name": "my-video-compressor",
+  "packageManager": "pnpm@8.9.2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder",
+    "build": "electron-builder --dir",
+    "pack": "electron-builder --dir --prepackaged"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^27.0.2",
+    "electron-builder": "^24.6.4"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0"
+  },
+  "build": {
+    "appId": "com.electron.my-video-compressor",
+    "productName": "my-video-compressor",
+    "files": [
+      "**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "mac": {
+      "category": "public.app-category.video",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm",
+        "tar.gz"
+      ]
+    }
+  }
+}
