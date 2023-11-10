@@ -17,7 +17,9 @@ pnpm run dev
 ### build the app
 
 ```bash
-pnpm run build
+pnpm run build-mac
+pnpm run build-linux
+pnpm run build-win
 ```
 
 generated app will be in the dist folder
