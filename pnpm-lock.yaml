@@ -8,6 +8,9 @@ dependencies:
   ffmpeg-static:
     specifier: ^5.2.0
     version: 5.2.0
+  ffprobe-static:
+    specifier: ^3.1.0
+    version: 3.1.0
 
 devDependencies:
   electron:
@@ -815,6 +818,10 @@ packages:
       progress: 2.0.3
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /ffprobe-static@3.1.0:
+    resolution: {integrity: sha512-Dvpa9uhVMOYivhHKWLGDoa512J751qN1WZAIO+Xw4L/mrUSPxS4DApzSUDbCFE/LUq2+xYnznEahTd63AqBSpA==}
     dev: false
 
   /filelist@1.0.4:
